@@ -154,6 +154,76 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1322369268}
+--- !u!1 &647899407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 647899410}
+  - 23: {fileID: 647899409}
+  - 102: {fileID: 647899408}
+  m_Layer: 0
+  m_Name: DebugText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!102 &647899408
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 647899407}
+  m_Text: Debug Text
+  m_OffsetZ: 0
+  m_CharacterSize: .300000012
+  m_LineSpacing: 1
+  m_Anchor: 0
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 0
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+--- !u!23 &647899409
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 647899407}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
+--- !u!4 &647899410
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 647899407}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.5, y: 4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &807946312
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,9 +364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74879c208d946741b4bfa2983577747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillA: 
-  skillB: 
-  skillC: 
+  debugText: {fileID: 647899407}
+  skillA: {fileID: 0}
+  skillB: {fileID: 0}
+  skillC: {fileID: 0}
 --- !u!114 &1033497222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,8 +379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70e6dd76fc8f0ab4090ccd5c2572becb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 6
   paddle: {fileID: 1105997424}
+  defaultSpeed: 6
   defaultSize: {x: .400000006, y: 2, z: 1}
   spawnPosition: {x: -8, y: 0, z: 0}
   lowerBounds: {x: -8, y: -5, z: -3}

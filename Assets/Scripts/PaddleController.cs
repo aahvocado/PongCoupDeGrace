@@ -2,10 +2,13 @@
 using System.Collections;
 
 public class PaddleController : MonoBehaviour {
-	public float defaultSpeed;//movement speed
 	public GameObject paddle;//the paddle object itself
 	private Animator anim;//animation controller?
 	
+	private string action;//current action
+	private ArrayList actionQueue;//action queue that I'm not sure I'm using yet
+	
+	public float defaultSpeed;//movement speed
 	private float currSpeed;
 	private float vMove;//vertical movement should be passed in by PongPlayer
 
@@ -30,7 +33,6 @@ public class PaddleController : MonoBehaviour {
 	}
 	//
 	public void forwardSmash(){
-		print("smash");
 		anim.SetBool("isForwardSmash", true);
 	}
 	

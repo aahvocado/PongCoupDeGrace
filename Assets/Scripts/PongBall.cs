@@ -27,8 +27,8 @@ public class PongBall : MonoBehaviour {
 	
 	//returns a vector3 with random speed based on speed
 	Vector3 randomInitialVelocity(){
-		float x = (int)Random.value == 0 ? -currSpeed:currSpeed;
-		float y = (int)Random.value == 0 ? -currSpeed*.3f:currSpeed*.3f;
+		float x = (int)Random.value == 0 ? -currSpeed : currSpeed;
+		float y = (int)Random.value == 0 ? -currSpeed*.3f : currSpeed*.3f;
 		//test velocity
 		x = currSpeed;
 		y = currSpeed;
