@@ -5,9 +5,6 @@ public class PaddleController : MonoBehaviour {
 	public GameObject paddle;//the paddle object itself
 	private Animator anim;//animation controller?
 	
-	private string action;//current action
-	private ArrayList actionQueue;//action queue that I'm not sure I'm using yet
-	
 	public float defaultSpeed;//movement speed
 	private float currSpeed;
 	private float vMove;//vertical movement should be passed in by PongPlayer
@@ -37,10 +34,13 @@ public class PaddleController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	void Update () {
 		paddle.transform.localScale = currSize;//set size correctly
 		Vector3 pos = this.transform.position;//get position
-
+		
+		//AnimatorStateInfo asi = anim.GetNextAnimatorStateInfo(0);
+		//print (isAnimating()+ " " +(asi.normalizedTime));
+		
 		//movement
 		//float vMove = Input.GetAxis ("Vertical");
 		this.transform.Translate(Vector3.up*currSpeed*Time.deltaTime*vMove);
@@ -60,6 +60,22 @@ public class PaddleController : MonoBehaviour {
 	//getters
 	public float getSpeed(){
 		return currSpeed;
+	}
+	
+	public string getCurrentAction(){
+		if(anim.GetBool("isForwardSmash")){
+			return "forward smash";
+		}else{
+			return "idle";
+		}
+	}
+	//is this animating non-idle states
+	public bool isAnimating(){
+		if(anim.GetBool("isForwardSmash")){
+			return true;
+		}
+		return false;
+
 	}
 	//setters
 	public void setVerticalMove(float v){

@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class PongBall : MonoBehaviour {
+	//private PlayerController pc;
+	
 	public float defaultSpeed;//movement speed
 	private float currSpeed;
 	
@@ -27,10 +29,10 @@ public class PongBall : MonoBehaviour {
 	
 	//returns a vector3 with random speed based on speed
 	Vector3 randomInitialVelocity(){
-		float x = (int)Random.value == 0 ? -currSpeed : currSpeed;
-		float y = (int)Random.value == 0 ? -currSpeed*.3f : currSpeed*.3f;
+		float x = (int)Random.value == 1 ? -currSpeed : currSpeed;
+		float y = (int)Random.value == 1 ? -currSpeed*.3f : currSpeed*.3f;
 		//test velocity
-		x = currSpeed;
+		x = -currSpeed;
 		y = currSpeed;
 		float z = Random.Range(0,0);
 		return new Vector3(x, y, z);
@@ -47,6 +49,16 @@ public class PongBall : MonoBehaviour {
 	void paddleHit(GameObject p){
 		Vector3 pos = this.transform.position;
 		Vector3 paddlePos = p.transform.position;
+		
+		PlayerController pc = p.transform.parent.gameObject.GetComponent<PlayerController>();
+		PongSkill skill = pc.getCurrentSkill();
+		//affected by skills?
+		if(pc.isAction()){
+			if(skill.getName() == "forward smash"){
+				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
+			}
+		}
+		
 		//calculate bounce factor
 		float lengthThird = .3f;
 		float velocityVerticalBoost = 1.2f;
@@ -65,12 +77,12 @@ public class PongBall : MonoBehaviour {
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
 	}
+	
 	// Update is called once per frame
 	void Update () {
+		//
 		Vector3 pos = this.transform.position;
-		this.transform.Translate(velocity*Time.deltaTime);//move ball
-		
-		//check paddle hit
+		this.transform.Translate(velocity*Time.deltaTime);//move ball		
 		
 		//check left right bounds
 		if(pos.x < lowerBounds.x){
@@ -87,6 +99,32 @@ public class PongBall : MonoBehaviour {
 		}else if(pos.y > upperBounds.y){
 			this.transform.position = new Vector3(pos.x, upperBounds.y, pos.z);
 			reflectY();
+		}
+		checkVelocity();
+	}
+	
+	//make sure velocity isn't too fast or too slow
+	void checkVelocity(){
+		float xmin = 3.0f;
+		float xmax = 16.0f;
+		float ymin = 3.0f;
+		float ymax = 16.0f;
+		int neg;//save value if negative
+		if(Mathf.Abs(velocity.x) < xmin){
+			neg = (int)Mathf.Ceil(1/velocity.x);
+			velocity = new Vector3(xmin*neg, velocity.y, velocity.z);
+		}
+		if(Mathf.Abs(velocity.x) > xmax){
+			neg = (int)Mathf.Ceil(1/velocity.x);
+			velocity = new Vector3(xmax*neg, velocity.y, velocity.z);
+		}
+		if(Mathf.Abs(velocity.y) < ymin){
+			neg = (int)Mathf.Ceil(1/velocity.x);
+			velocity = new Vector3(velocity.x, ymin*neg, velocity.z);
+		}
+		if(Mathf.Abs(velocity.y) > ymax){
+			neg = (int)Mathf.Ceil(1/velocity.x);
+			velocity = new Vector3(velocity.x, ymax*neg, velocity.z);
 		}
 	}
 	
