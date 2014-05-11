@@ -49,20 +49,25 @@ public class PongBall : MonoBehaviour {
 		Vector3 paddlePos = p.transform.position;
 		//calculate bounce factor
 		float lengthThird = .3f;
-		float velocityVerticalBoost = 1.2f;
+		float velocityVerticalBoost = 1.5f;
 		float velocityVerticalShrink = .7f;
 		float velocityHorizontalBoost = 1.4f;
 		//change reflection depending on where it hit on the paddle
 		if(pos.y > paddlePos.y + lengthThird){//higher
 			//velocity.y *= velocityVerticalBoost;
+			//velocity.y = Mathf.Acos(pos.y - paddlePos.y);
 		}else if(pos.y < paddlePos.y - lengthThird){//lower
-			//velocity.y *= velocityVerticalBoost;
+			//velocity.y *= -velocityVerticalBoost;
 		}else{//normal
 			if(Mathf.Abs(velocity.y) > 2){
-				//velocity.y *= velocityVerticalShrink;
+				velocity.y *= velocityVerticalShrink;
 			}
 		}
 		//velocity.x *= velocityHorizontalBoost;
+		velocity.y = Mathf.Asin(pos.y - paddlePos.y) * 7;
+		if(Mathf.Abs(velocity.y) > 20){
+			velocity.y *= velocityVerticalShrink;
+			}
 		reflectX ();
 	}
 	// Update is called once per frame
@@ -97,6 +102,7 @@ public class PongBall : MonoBehaviour {
 	void reflectY(){
 		velocity = new Vector3(velocity.x, velocity.y*-1, velocity.z);
 	}
+
 	//getters
 	public float getSpeed(){
 		return currSpeed;
