@@ -65,15 +65,11 @@ public class PongBall : MonoBehaviour {
 		float velocityVerticalShrink = .7f;
 		float velocityHorizontalBoost = 1.4f;
 		//change reflection depending on where it hit on the paddle
-		if(pos.y > paddlePos.y + lengthThird){//higher
-			//velocity.y *= velocityVerticalBoost;
-		}else if(pos.y < paddlePos.y - lengthThird){//lower
-			//velocity.y *= velocityVerticalBoost;
-		}else{//normal
-			if(Mathf.Abs(velocity.y) > 2){
-				//velocity.y *= velocityVerticalShrink;
+		velocity.y = Mathf.Asin(pos.y - paddlePos.y) * 7;
+		if(Mathf.Abs(velocity.y) > 20){
+			velocity.y *= velocityVerticalShrink;
 			}
-		}
+			
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
 	}
