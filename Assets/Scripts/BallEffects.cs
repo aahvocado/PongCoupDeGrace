@@ -10,10 +10,10 @@ public class BallEffects : MonoBehaviour {
 	
 	
 	public BallEffects(string n){
-		name = n;
+		changeEffect(n);
 	}
 	public BallEffects(int i){
-		id = i;
+		changeEffect(i);
 	}
 	
 	public void changeEffect(int idNum){
@@ -21,7 +21,7 @@ public class BallEffects : MonoBehaviour {
 		switch(idNum){
 		case 1:
 			name = "on fire";
-			maxTimer = 300;
+			maxTimer = 160;
 			break;
 		case 0://reset
 			name = "null";
@@ -32,7 +32,7 @@ public class BallEffects : MonoBehaviour {
 	}
 	public void changeEffect(string n){
 		switch(n){
-		case "forward smash":
+		case "on fire":
 			changeEffect (1);
 			break;
 		case "null":
@@ -51,6 +51,9 @@ public class BallEffects : MonoBehaviour {
 		}
 		return false;
 	}
+	public float getTimer(){
+		return timer;
+	}
 	
 	// Use this for initialization
 	void Start () {
@@ -59,6 +62,7 @@ public class BallEffects : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//this doesn't actually get called I don't think		
 		if(timer > 0){
 			timer --;
 		}

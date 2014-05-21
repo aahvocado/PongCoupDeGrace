@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public GameObject debugText;
+	public GameObject ball;
+	
 	public float basePower;//damage?
 	public float baseArmor;//defense?
 	
@@ -63,9 +65,12 @@ public class PlayerController : MonoBehaviour {
 	//use a skill
 	string useSkill(PongSkill skill){
 		if(!isAction()){
-			switch(skill.getID()){
-				case 1:
+			switch(skill.getName()){
+				case "forward smash":
 					paddleScript.forwardSmash();
+					break;
+				case "ignite":
+					useIgnite();
 					break;
 				
 			}
@@ -75,6 +80,10 @@ public class PlayerController : MonoBehaviour {
 			return "none";
 		}
 	}
+	void useIgnite(){
+		ball.GetComponent<PongBall>().addEffect(new BallEffects("on fire"));
+	}
+	
 	//getters
 	//are we currently using a skill or action
 	public bool isAction(){

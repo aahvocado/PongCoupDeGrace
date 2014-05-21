@@ -121,27 +121,38 @@ public class PongBall : MonoBehaviour {
 	}
 	//check if ball is on fire
 	bool checkOnFire(){
-		foreach(BallEffects be in effectsList){
-			if(hasEffectName("on fire")){
-				fireEffect.GetComponent<ParticleSystem>().enableEmission = true;
-				return true;
-			}else{
-				fireEffect.GetComponent<ParticleSystem>().enableEmission = false;
-				return false;
+		ParticleSystem fire = fireEffect.GetComponent<ParticleSystem>();
+		if(getEffectName("on fire").isActive()){
+			if(!fire.isPlaying){
+				fire.Play();
 			}
+			return true;
+		}else{
+			fire.Stop();
 		}
 		return false;
 	}
+	//check all effects and subtract timer
 	void checkEffects(){
 		foreach(BallEffects be in effectsList){
+			be.timer --;			
 			if(!be.isActive()){
 				//remove the effect, how to do this without messing up the effect list :(
+				effectsList.Remove (be);
 			}
 		}
 		checkOnFire();
 
 	}
-	bool hasEffectName(string n){
+	public BallEffects getEffectName(string n){
+		foreach(BallEffects be in effectsList){
+			if(be.getName() == n){
+				return be;
+			}
+		}
+		return new BallEffects("null");
+	}
+	public bool hasEffectName(string n){
 		foreach(BallEffects be in effectsList){
 			if(be.getName() == n){
 				return true;
