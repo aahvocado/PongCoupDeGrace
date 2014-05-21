@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class PongBall : MonoBehaviour {
+	public bool paddlePositionMatters;//does the position the ball reflects off the paddle matter? if false, will just reflect x
 	//private PlayerController pc;
+	private List<BallEffects> effectsList = new List<BallEffects>();
+	private GameObject fireEffect;
 	
 	public float defaultSpeed;//movement speed
 	private float currSpeed;
@@ -19,13 +24,25 @@ public class PongBall : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.transform.position = spawnPosition;
+		fireEffect = GameObject.Find("OnFire");
 		reset ();
 	}
 	void reset(){
+		effectsList = new List<BallEffects>();
 		currSpeed = defaultSpeed;
 		currSize = defaultSize;
 		velocity = randomInitialVelocity();
 	}
+	
+	//public functions
+	public void addEffect(BallEffects e){
+		if(hasEffectName(e.getName())){
+			//reset the timer on effect
+		}else{
+			effectsList.Add(e);
+		}
+	}
+
 	
 	//returns a vector3 with random speed based on speed
 	Vector3 randomInitialVelocity(){
@@ -65,10 +82,12 @@ public class PongBall : MonoBehaviour {
 		float velocityVerticalShrink = .7f;
 		float velocityHorizontalBoost = 1.4f;
 		//change reflection depending on where it hit on the paddle
-		velocity.y = Mathf.Asin(pos.y - paddlePos.y) * 7;
-		if(Mathf.Abs(velocity.y) > 20){
-			velocity.y *= velocityVerticalShrink;
-			}
+		if(paddlePositionMatters){
+			velocity.y = Mathf.Asin(pos.y - paddlePos.y) * 7;
+			if(Mathf.Abs(velocity.y) > 20){
+				velocity.y *= velocityVerticalShrink;
+				}
+		}
 			
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
@@ -96,9 +115,40 @@ public class PongBall : MonoBehaviour {
 			this.transform.position = new Vector3(pos.x, upperBounds.y, pos.z);
 			reflectY();
 		}
+		//checks
+		checkEffects();//cooldown effects etc
 		checkVelocity();
 	}
-	
+	//check if ball is on fire
+	bool checkOnFire(){
+		foreach(BallEffects be in effectsList){
+			if(hasEffectName("on fire")){
+				fireEffect.GetComponent<ParticleSystem>().enableEmission = true;
+				return true;
+			}else{
+				fireEffect.GetComponent<ParticleSystem>().enableEmission = false;
+				return false;
+			}
+		}
+		return false;
+	}
+	void checkEffects(){
+		foreach(BallEffects be in effectsList){
+			if(!be.isActive()){
+				//remove the effect, how to do this without messing up the effect list :(
+			}
+		}
+		checkOnFire();
+
+	}
+	bool hasEffectName(string n){
+		foreach(BallEffects be in effectsList){
+			if(be.getName() == n){
+				return true;
+			}
+		}
+		return false;
+	}
 	//make sure velocity isn't too fast or too slow
 	void checkVelocity(){
 		float xmin = 3.0f;
@@ -132,6 +182,9 @@ public class PongBall : MonoBehaviour {
 		velocity = new Vector3(velocity.x, velocity.y*-1, velocity.z);
 	}
 	//getters
+	public List<BallEffects> getEffects(){
+		return effectsList;
+	}
 	public float getSpeed(){
 		return currSpeed;
 	}

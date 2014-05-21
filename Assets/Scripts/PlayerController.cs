@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public GameObject debugText;
+	public float basePower;//damage?
+	public float baseArmor;//defense?
 	
 	private string action;//current action
 	private ArrayList actionQueue;//action queue that I'm not sure I'm using yet
@@ -19,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		paddleScript = this.GetComponent<PaddleController>();
 		skillA = new PongSkill("forward smash");
-		skillB = new PongSkill("forward smash");
+		skillB = new PongSkill("ignite");
 		skillC = new PongSkill("forward smash");
 		currentSkill = null;
 	}
