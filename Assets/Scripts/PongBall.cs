@@ -35,15 +35,15 @@ public class PongBall : MonoBehaviour {
 	}
 	
 	//public functions
+	//add an effect onto the ball
 	public void addEffect(BallEffects e){
 		if(hasEffectName(e.getName())){
-			//reset the timer on effect
+			getEffectName(e.getName()).refresh();
 		}else{
 			effectsList.Add(e);
 		}
 	}
 
-	
 	//returns a vector3 with random speed based on speed
 	Vector3 randomInitialVelocity(){
 		float x = (int)Random.value == 1 ? -currSpeed : currSpeed;
@@ -119,10 +119,10 @@ public class PongBall : MonoBehaviour {
 		checkEffects();//cooldown effects etc
 		checkVelocity();
 	}
-	//check if ball is on fire
+	//check if ball is ignited
 	bool checkOnFire(){
 		ParticleSystem fire = fireEffect.GetComponent<ParticleSystem>();
-		if(getEffectName("on fire").isActive()){
+		if(getEffectName("ignited").isActive()){
 			if(!fire.isPlaying){
 				fire.Play();
 			}
@@ -135,10 +135,9 @@ public class PongBall : MonoBehaviour {
 	//check all effects and subtract timer
 	void checkEffects(){
 		foreach(BallEffects be in effectsList){
-			be.timer --;			
+			be.updateEffect();		
 			if(!be.isActive()){
 				//remove the effect, how to do this without messing up the effect list :(
-				effectsList.Remove (be);
 			}
 		}
 		checkOnFire();

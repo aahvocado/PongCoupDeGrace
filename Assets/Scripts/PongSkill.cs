@@ -38,6 +38,7 @@ public class PongSkill : MonoBehaviour {
 			break;
 		case 3:
 			name = "ignite";
+			baseCooldown = 450.0f;
 			break;
 		case 2:
 			name = "firewall";
@@ -45,6 +46,7 @@ public class PongSkill : MonoBehaviour {
 			
 		case 1:
 			name = "forward smash";
+			baseCooldown = 150.0f;
 			baseDamage = 10.0f;
 			baseMovementModifier = new Vector3(3f, 0.5f, 1f);
 			break;
@@ -54,6 +56,7 @@ public class PongSkill : MonoBehaviour {
 			baseMovementModifier = new Vector3(0,0,0);
 			break;
 		}
+		currCooldown = baseCooldown;
 	}
 	//changes this skill based on the name
 	public void changeSkill(string skillName){
@@ -78,13 +81,33 @@ public class PongSkill : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
+	}
+	public void updateSkill(){
+		if(currCooldown < baseCooldown){
+			currCooldown ++;
+		}
 	}
 	//reset everything about this skill to it's id
+	public void goOnCooldown(){
+		currCooldown = 0;
+	}
 	public void reset(){
 		changeSkill(id);
 	}
 	//getters
+	public bool isOnCooldown(){
+		if(currCooldown < baseCooldown){
+			return true;
+		}
+		return false;
+	}
+	public float getCooldown(){
+		return currCooldown;
+	}
+	public string displayCooldown(){
+		return currCooldown +"/"+baseCooldown;
+	}
 	public Vector3 getMovementModifier(){
 		return baseMovementModifier;
 	}

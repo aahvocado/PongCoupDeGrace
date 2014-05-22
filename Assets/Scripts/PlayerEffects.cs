@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BallEffects : MonoBehaviour {
+public class PlayerEffects : MonoBehaviour {
 	private string name;//name of this effect
 	private int id;
 	
@@ -9,22 +9,15 @@ public class BallEffects : MonoBehaviour {
 	public float timer;//time 
 	
 	
-	public BallEffects(string n){
+	public PlayerEffects(string n){
 		changeEffect(n);
 	}
-	public BallEffects(int i){
+	public PlayerEffects(int i){
 		changeEffect(i);
 	}
 	public void refresh(){
 		timer = maxTimer;
 	}
-	//timer
-	public void updateEffect(){
-		if(timer > 0){
-			timer --;
-		}
-	}
-	//set to effect
 	public void changeEffect(int idNum){
 		id = idNum;
 		switch(idNum){
@@ -72,7 +65,8 @@ public class BallEffects : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//this doesn't actually get called I don't think		
-		
+		if(timer > 0){
+			timer --;
+		}
 	}
-	
 }

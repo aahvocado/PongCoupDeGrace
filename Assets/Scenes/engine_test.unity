@@ -104,11 +104,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 647899407}
   ball: {fileID: 1804295044}
+  maxHealth: 0
   basePower: 0
   baseArmor: 0
-  skillA: {fileID: 0}
-  skillB: {fileID: 0}
-  skillC: {fileID: 0}
 --- !u!114 &357192641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,11 +540,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 647899407}
   ball: {fileID: 1804295044}
-  basePower: 0
-  baseArmor: 0
-  skillA: {fileID: 0}
-  skillB: {fileID: 0}
-  skillC: {fileID: 0}
+  maxHealth: 10
+  basePower: 1
+  baseArmor: 1
 --- !u!114 &1033497222
 MonoBehaviour:
   m_ObjectHideFlags: 0

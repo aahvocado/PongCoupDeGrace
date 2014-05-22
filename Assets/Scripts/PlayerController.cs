@@ -5,23 +5,33 @@ public class PlayerController : MonoBehaviour {
 	public GameObject debugText;
 	public GameObject ball;
 	
+	public float maxHealth;
+	private float currHealth;
 	public float basePower;//damage?
+	private float currPower;
 	public float baseArmor;//defense?
+	private float currArmor;
 	
 	private string action;//current action
 	private ArrayList actionQueue;//action queue that I'm not sure I'm using yet
 	//public GameObject paddle;//the paddle this belongs to
 	private PaddleController paddleScript;//the script that the paddle utilizes
-	public PongSkill skillA;//first skill name
-	public PongSkill skillB;//second skill name
-	public PongSkill skillC;//third skill name
+	private PongSkill skillPassive;//passive skill
+	private PongSkill skillA;//first skill name
+	private PongSkill skillB;//second skill name
+	private PongSkill skillC;//third skill name
 	
 	private PongSkill currentSkill;
 	
 
 	// Use this for initialization
 	void Start () {
+		currHealth = maxHealth;
+		currPower = basePower;
+		currArmor = baseArmor;
+		//
 		paddleScript = this.GetComponent<PaddleController>();
+		skillPassive = new PongSkill("null");
 		skillA = new PongSkill("forward smash");
 		skillB = new PongSkill("ignite");
 		skillC = new PongSkill("forward smash");
@@ -33,17 +43,28 @@ public class PlayerController : MonoBehaviour {
 		playerInput();
 		action = paddleScript.getCurrentAction();
 		
-		//clear skill
+		//check skill
+		updateSkills ();
+		//debug
+		TextMesh tm = debugText.GetComponent<TextMesh>();
+		tm.text = "hp: "+ currHealth + "/" + maxHealth+
+				  "action: "+ action +
+				  "\npassive: "+skillPassive.getName()+ " "+ skillPassive.displayCooldown()+
+				  "\ng: "+skillA.getName()+ " "+ skillA.displayCooldown()+
+				  "\nh: "+skillB.getName()+ " "+ skillB.displayCooldown()+
+				  "\nj: "+skillC.getName()+ " "+ skillC.displayCooldown()+
+				  "\n ";
+	}
+	void updateSkills(){
+		//check if using a skill
 		if(!isAction ()){
 			currentSkill = new PongSkill(0);
 		}
-		//debug
-		TextMesh tm = debugText.GetComponent<TextMesh>();
-		tm.text = "action: "+ action +
-				  "\ng: "+skillA.getName()+
-				  "\nh: "+skillB.getName()+
-				  "\nj: "+skillC.getName()+
-				  "\n ";
+		//cooldown all skills
+		skillPassive.updateSkill();
+		skillA.updateSkill();
+		skillB.updateSkill();
+		skillC.updateSkill();
 	}
 	
 	void playerInput(){
@@ -64,7 +85,8 @@ public class PlayerController : MonoBehaviour {
 	}
 	//use a skill
 	string useSkill(PongSkill skill){
-		if(!isAction()){
+		if(!isAction() && !skill.isOnCooldown()){
+			skill.goOnCooldown();
 			switch(skill.getName()){
 				case "forward smash":
 					paddleScript.forwardSmash();
@@ -81,7 +103,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	void useIgnite(){
-		ball.GetComponent<PongBall>().addEffect(new BallEffects("on fire"));
+		ball.GetComponent<PongBall>().addEffect(new BallEffects("ignited"));
 	}
 	
 	//getters
