@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class PongBall : MonoBehaviour {
 	public bool paddlePositionMatters;//does the position the ball reflects off the paddle matter? if false, will just reflect x
+	public bool damageOnCollision;
 	//private PlayerController pc;
 	private List<BallEffects> effectsList = new List<BallEffects>();
 	private GameObject fireEffect;
@@ -23,11 +24,12 @@ public class PongBall : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		this.transform.position = spawnPosition;
 		fireEffect = GameObject.Find("OnFire");
 		reset ();
 	}
-	void reset(){
+	
+	public void reset(){
+		this.transform.position = spawnPosition;
 		effectsList = new List<BallEffects>();
 		currSpeed = defaultSpeed;
 		currSize = defaultSize;
@@ -75,7 +77,7 @@ public class PongBall : MonoBehaviour {
 				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
 			}
 		}
-		
+		if(damageOnCollision) damageToPlayer(pc, 1);//damage player on collision
 		//calculate bounce factor
 		float lengthThird = .3f;
 		float velocityVerticalBoost = 1.2f;
@@ -91,6 +93,11 @@ public class PongBall : MonoBehaviour {
 			
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
+	}
+	//deal damage to paddle
+	float damageToPlayer(PlayerController pc, float damage){
+		pc.takeDamage(damage);
+		return damage;
 	}
 	
 	// Update is called once per frame
@@ -200,5 +207,11 @@ public class PongBall : MonoBehaviour {
 	}
 	public Vector3 getVelocity(){
 		return velocity;
+	}
+	public Vector3 getLowerBounds(){
+		return lowerBounds;
+	}
+	public Vector3 getUpperBounds(){
+		return upperBounds;
 	}
 }

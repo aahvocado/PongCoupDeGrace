@@ -540,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 647899407}
   ball: {fileID: 1804295044}
-  maxHealth: 10
+  maxHealth: 20
   basePower: 1
   baseArmor: 1
 --- !u!114 &1033497222
@@ -786,6 +786,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffa5d86fa68d3e4188181955d48360e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 1804295044}
+  player1: {fileID: 1033497220}
+  p1AI: 0
+  player2: {fileID: 357192639}
+  p2AI: 1
 --- !u!1 &1804295044
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,6 +875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paddlePositionMatters: 0
+  damageOnCollision: 0
   defaultSpeed: 5
   defaultSize: {x: .5, y: .5, z: .5}
   spawnPosition: {x: 0, y: 0, z: 0}

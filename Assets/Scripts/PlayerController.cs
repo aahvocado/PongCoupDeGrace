@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public GameObject debugText;
 	public GameObject ball;
+	private float vMove;//get passed this from Pong Game Controller
 	
 	public float maxHealth;
 	private float currHealth;
@@ -37,18 +38,21 @@ public class PlayerController : MonoBehaviour {
 		skillC = new PongSkill("forward smash");
 		currentSkill = null;
 	}
-	
+	public void takeDamage(float damage){
+		currHealth = currHealth - damage;
+	}
 	// Update is called once per frame
 	void Update () {
-		playerInput();
+		//playerInput();
+		paddleScript.setVerticalMove(vMove);
+
 		action = paddleScript.getCurrentAction();
-		
 		//check skill
 		updateSkills ();
 		//debug
 		TextMesh tm = debugText.GetComponent<TextMesh>();
-		tm.text = "hp: "+ currHealth + "/" + maxHealth+
-				  "action: "+ action +
+		tm.text = "\nhp: "+ currHealth + "/" + maxHealth+
+				  "\naction: "+ action +
 				  "\npassive: "+skillPassive.getName()+ " "+ skillPassive.displayCooldown()+
 				  "\ng: "+skillA.getName()+ " "+ skillA.displayCooldown()+
 				  "\nh: "+skillB.getName()+ " "+ skillB.displayCooldown()+
@@ -66,8 +70,8 @@ public class PlayerController : MonoBehaviour {
 		skillB.updateSkill();
 		skillC.updateSkill();
 	}
-	
-	void playerInput(){
+		
+	/*void playerInput(){
 		//skill useage
 	 	if (Input.GetKeyDown(KeyCode.G)){
 			useSkill (skillA);
@@ -81,10 +85,9 @@ public class PlayerController : MonoBehaviour {
 		
 		//send vertical movement value to the paddlescript
 		float vMove = Input.GetAxis ("Vertical");
-		paddleScript.setVerticalMove(vMove);
-	}
+	}*/
 	//use a skill
-	string useSkill(PongSkill skill){
+	public string useSkill(PongSkill skill){
 		if(!isAction() && !skill.isOnCooldown()){
 			skill.goOnCooldown();
 			switch(skill.getName()){
@@ -120,5 +123,17 @@ public class PlayerController : MonoBehaviour {
 	public string getAction(){
 		return action;
 	}
+	public PongSkill getSkillA(){
+		return skillA;
+	}
+	public PongSkill getSkillB(){
+		return skillB;
+	}
+	public PongSkill getSkillC(){
+		return skillC;
+	}
 	//setters
+	public void setVMove(float v){
+		vMove = v;
+	}
 }
