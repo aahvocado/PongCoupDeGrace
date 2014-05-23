@@ -132,6 +132,9 @@ public class PlayerController : MonoBehaviour {
 	public PongSkill getSkillC(){
 		return skillC;
 	}
+	public float getVMove(){
+		return vMove;
+	}
 	//setters
 	public void setVMove(float v){
 		vMove = v;

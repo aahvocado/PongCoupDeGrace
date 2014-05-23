@@ -19,7 +19,7 @@ public class PongGameController : MonoBehaviour {
 		checkBall();
 		//
 		updateP1 ();
-		//updateP2 ();
+		updateP2 ();
 	}
 	void checkBall(){
 		PlayerController p1script = player1.GetComponent<PlayerController>();
@@ -27,6 +27,9 @@ public class PongGameController : MonoBehaviour {
 		PongBall ballScript = ball.GetComponent<PongBall>();
 		if(ball.transform.position.x < ballScript.getLowerBounds().x){//passed player 1's goal
 			p1script.takeDamage(3);
+			ballScript.reset();
+		}else if(ball.transform.position.x > ballScript.getUpperBounds().x){//passed player 1's goal
+			p2script.takeDamage(3);
 			ballScript.reset();
 		}
 	}
@@ -44,7 +47,7 @@ public class PongGameController : MonoBehaviour {
 				p1script.useSkill (p1script.getSkillC());
 			}
 			//send vertical movement value to the paddlescript
-			p1script.setVMove(Input.GetAxis ("Vertical"));
+			p1script.setVMove(Input.GetAxis ("P1 Vertical"));
 		}
 	}
 	//player 2
@@ -61,7 +64,7 @@ public class PongGameController : MonoBehaviour {
 				p2script.useSkill (p2script.getSkillC());
 			}
 			//send vertical movement value to the paddlescript
-			p2script.setVMove(Input.GetAxis ("Vertical"));
+			p2script.setVMove(Input.GetAxis ("P2 Vertical"));
 		}
 	}
 }

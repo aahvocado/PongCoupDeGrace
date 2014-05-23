@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 
 public class PongBall : MonoBehaviour {
+	public GameObject p1;
+	private PlayerController p1script;
+	public GameObject p2;
+	private PlayerController p2script;
+	//
 	public bool paddlePositionMatters;//does the position the ball reflects off the paddle matter? if false, will just reflect x
 	public bool damageOnCollision;
 	//private PlayerController pc;
@@ -26,6 +31,9 @@ public class PongBall : MonoBehaviour {
 	void Start () {
 		fireEffect = GameObject.Find("OnFire");
 		reset ();
+		//
+		p1script = p1.GetComponent<PlayerController>();
+		p2script = p2.GetComponent<PlayerController>();
 	}
 	
 	public void reset(){
@@ -48,11 +56,15 @@ public class PongBall : MonoBehaviour {
 
 	//returns a vector3 with random speed based on speed
 	Vector3 randomInitialVelocity(){
-		float x = (int)Random.value == 1 ? -currSpeed : currSpeed;
-		float y = (int)Random.value == 1 ? -currSpeed*.3f : currSpeed*.3f;
-		//test velocity
-		x = -currSpeed;
-		y = currSpeed;
+		float spawnx = Random.Range(-1,1);
+		float spawny = Random.Range(-1,1);
+		float x = spawnx < 0.0 ? -currSpeed : currSpeed;
+		float y = spawny < 0.0 ? -(currSpeed) : currSpeed;
+		//print ("random "+ testx + " / " + testy);
+		
+		//force test velocity
+		//x = -currSpeed;
+		//y = currSpeed;
 		float z = Random.Range(0,0);
 		return new Vector3(x, y, z);
 	}
@@ -71,13 +83,12 @@ public class PongBall : MonoBehaviour {
 		
 		PlayerController pc = p.transform.parent.gameObject.GetComponent<PlayerController>();
 		PongSkill skill = pc.getCurrentSkill();
-		//affected by skills?
-		if(pc.isAction()){
-			if(skill.getName() == "forward smash"){
-				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
-			}
-		}
-		if(damageOnCollision) damageToPlayer(pc, 1);//damage player on collision
+		//ball affected by paddle skills?
+		paddleEffectsCheck(pc);
+		//paddle affected by ball effects?
+		ballEffectsCheck(pc);
+		//damage player on collision
+		if(damageOnCollision) damageToPlayer(pc, 1);
 		//calculate bounce factor
 		float lengthThird = .3f;
 		float velocityVerticalBoost = 1.2f;
@@ -93,6 +104,22 @@ public class PongBall : MonoBehaviour {
 			
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
+	}
+	//skills affecting this ball
+	void paddleEffectsCheck(PlayerController pc){
+		PongSkill skill = pc.getCurrentSkill();
+		if(pc.isAction()){
+			if(skill.getName() == "forward smash"){
+				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
+			}
+		}
+	}
+	//effects that happen 
+	void ballEffectsCheck(PlayerController pc){
+		//ignited, hurt player
+		if(hasEffectName("ignited")){
+			pc.takeDamage(1);
+		}
 	}
 	//deal damage to paddle
 	float damageToPlayer(PlayerController pc, float damage){
