@@ -3,27 +3,54 @@ using System.Collections;
 
 public class PongGameController : MonoBehaviour {
 	public GameObject ball;
-	public GameObject player1;
 	public bool p1AI;//player 1 computer player?
-	public GameObject player2;
+	public GameObject player1;
+	private PlayerController p1script;
+	public GameObject p1text;
+	
 	public bool p2AI;//player 2 computer player?
-
+	public GameObject player2;
+	private PlayerController p2script;
+	public GameObject p2text;
 
 	// Use this for initialization
 	void Start () {
-		
+		p1script = player1.GetComponent<PlayerController>();
+		p2script = player2.GetComponent<PlayerController>();
+		//
+		p1script.setSkillPassive(new PongSkill("null"));
+		p1script.setSkillA(new PongSkill("fireblast"));
+		p1script.setSkillB(new PongSkill("ignite"));
+		p1script.setSkillC(new PongSkill("forward smash"));
+		//
+		p2script.setSkillPassive(new PongSkill("null"));
+		p2script.setSkillA(new PongSkill("fireblast"));
+		p2script.setSkillB(new PongSkill("ignite"));
+		p2script.setSkillC(new PongSkill("forward smash"));
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
 		checkBall();
 		//
 		updateP1 ();
 		updateP2 ();
+		//update debugging text
+		updateDebug(p1text.GetComponent<TextMesh>(), p1script);
+		updateDebug(p2text.GetComponent<TextMesh>(), p2script);
+	}
+	//updates the debug based on player 
+	void updateDebug(TextMesh tm, PlayerController pscript){
+		tm.text = "\nhp: "+ pscript.getCurrHealth() + "/" + pscript.getMaxHealth()+
+				  "\naction: "+ pscript.getAction() +
+				  "\npassive: "+ pscript.getSkillPassive().getName()+ " "+ pscript.getSkillPassive().displayCooldown()+
+				  "\ng: "+pscript.getSkillA().getName()+ " "+ pscript.getSkillA().displayCooldown()+
+				  "\nh: "+pscript.getSkillB().getName()+ " "+ pscript.getSkillB().displayCooldown()+
+				  "\nj: "+pscript.getSkillC().getName()+ " "+ pscript.getSkillC().displayCooldown()+
+				  "\n ";
 	}
 	void checkBall(){
-		PlayerController p1script = player1.GetComponent<PlayerController>();
-		PlayerController p2script = player2.GetComponent<PlayerController>();
 		PongBall ballScript = ball.GetComponent<PongBall>();
 		if(ball.transform.position.x < ballScript.getLowerBounds().x){//passed player 1's goal
 			p1script.takeDamage(3);
@@ -35,7 +62,6 @@ public class PongGameController : MonoBehaviour {
 	}
 	//player 1
 	void updateP1(){
-		PlayerController p1script = player1.GetComponent<PlayerController>();
 		if(!p1AI){
 			if (Input.GetKeyDown(KeyCode.G)){
 				p1script.useSkill (p1script.getSkillA());
@@ -52,7 +78,6 @@ public class PongGameController : MonoBehaviour {
 	}
 	//player 2
 	void updateP2(){
-		PlayerController p2script = player2.GetComponent<PlayerController>();
 		if(!p2AI){
 			if (Input.GetKeyDown(KeyCode.Keypad1)){
 				p2script.useSkill (p2script.getSkillA());

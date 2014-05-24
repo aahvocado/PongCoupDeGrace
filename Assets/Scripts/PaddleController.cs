@@ -78,6 +78,7 @@ public class PaddleController : MonoBehaviour {
 
 	}
 	//setters
+
 	public void setVerticalMove(float v){
 		vMove = v;
 	}

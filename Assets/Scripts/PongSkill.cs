@@ -35,6 +35,7 @@ public class PongSkill : MonoBehaviour {
 		case 4:
 			name = "fireblast";
 			baseDamage = 5.0f;
+			baseCooldown = 25f;
 			break;
 		case 3:
 			name = "ignite";

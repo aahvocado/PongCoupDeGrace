@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	public GameObject debugText;
 	public GameObject ball;
+	public GameObject paddle;
 	private float vMove;//get passed this from Pong Game Controller
 	
 	public float maxHealth;
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 	//public GameObject paddle;//the paddle this belongs to
 	private PaddleController paddleScript;//the script that the paddle utilizes
 	private PongSkill skillPassive;//passive skill
-	private PongSkill skillA;//first skill name
+	private PongSkill skillA = new PongSkill("null");//first skill name
 	private PongSkill skillB;//second skill name
 	private PongSkill skillC;//third skill name
 	
@@ -32,10 +32,6 @@ public class PlayerController : MonoBehaviour {
 		currArmor = baseArmor;
 		//
 		paddleScript = this.GetComponent<PaddleController>();
-		skillPassive = new PongSkill("null");
-		skillA = new PongSkill("forward smash");
-		skillB = new PongSkill("ignite");
-		skillC = new PongSkill("forward smash");
 		currentSkill = null;
 	}
 	public void takeDamage(float damage){
@@ -45,19 +41,15 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		//playerInput();
 		paddleScript.setVerticalMove(vMove);
-
 		action = paddleScript.getCurrentAction();
 		//check skill
-		updateSkills ();
+		if(skillA.getName() != "null"){
+			updateSkills ();
+		}else{
+			print ("MISSING SKILLS");
+		}
 		//debug
-		TextMesh tm = debugText.GetComponent<TextMesh>();
-		tm.text = "\nhp: "+ currHealth + "/" + maxHealth+
-				  "\naction: "+ action +
-				  "\npassive: "+skillPassive.getName()+ " "+ skillPassive.displayCooldown()+
-				  "\ng: "+skillA.getName()+ " "+ skillA.displayCooldown()+
-				  "\nh: "+skillB.getName()+ " "+ skillB.displayCooldown()+
-				  "\nj: "+skillC.getName()+ " "+ skillC.displayCooldown()+
-				  "\n ";
+		
 	}
 	void updateSkills(){
 		//check if using a skill
@@ -70,27 +62,15 @@ public class PlayerController : MonoBehaviour {
 		skillB.updateSkill();
 		skillC.updateSkill();
 	}
-		
-	/*void playerInput(){
-		//skill useage
-	 	if (Input.GetKeyDown(KeyCode.G)){
-			useSkill (skillA);
-		}
-		if (Input.GetKeyDown(KeyCode.H)){
-			useSkill (skillB);
-		}
-		if (Input.GetKeyDown(KeyCode.J)){
-			useSkill (skillC);
-		}
-		
-		//send vertical movement value to the paddlescript
-		float vMove = Input.GetAxis ("Vertical");
-	}*/
+
 	//use a skill
 	public string useSkill(PongSkill skill){
 		if(!isAction() && !skill.isOnCooldown()){
 			skill.goOnCooldown();
 			switch(skill.getName()){
+				case "fireblast":
+					useFireblast();
+					break;
 				case "forward smash":
 					paddleScript.forwardSmash();
 					break;
@@ -105,11 +85,27 @@ public class PlayerController : MonoBehaviour {
 			return "none";
 		}
 	}
+	void useFireblast(){
+		Vector3 pos = new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
+		GameObject fb = (GameObject)Instantiate(Resources.Load ("Fireblast", typeof(GameObject)), pos, Quaternion.identity);
+		FireblastScript fbs = fb.GetComponent<FireblastScript>();
+		if(this.transform.position.x > 0){
+			fbs.flip();
+			//fbs.setSpeed(-fbs.getSpeed ());
+		}		
+
+	}
 	void useIgnite(){
 		ball.GetComponent<PongBall>().addEffect(new BallEffects("ignited"));
 	}
 	
 	//getters
+	public float getMaxHealth(){
+		return maxHealth;
+	}
+	public float getCurrHealth(){
+		return currHealth;
+	}
 	//are we currently using a skill or action
 	public bool isAction(){
 		if(action == "forward smash"){
@@ -122,6 +118,9 @@ public class PlayerController : MonoBehaviour {
 	}
 	public string getAction(){
 		return action;
+	}
+	public PongSkill getSkillPassive(){
+		return skillPassive;
 	}
 	public PongSkill getSkillA(){
 		return skillA;
@@ -136,6 +135,19 @@ public class PlayerController : MonoBehaviour {
 		return vMove;
 	}
 	//setters
+	
+	public void setSkillPassive(PongSkill s){
+		skillPassive = s;
+	}
+	public void setSkillA(PongSkill s){
+		skillA = s;
+	}
+	public void setSkillB(PongSkill s){
+		skillB = s;
+	}
+	public void setSkillC(PongSkill s){
+		skillC = s;
+	}
 	public void setVMove(float v){
 		vMove = v;
 	}

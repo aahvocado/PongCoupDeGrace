@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74879c208d946741b4bfa2983577747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugText: {fileID: 820510011}
   ball: {fileID: 1804295044}
+  paddle: {fileID: 844407987}
   maxHealth: 20
   basePower: 1
   baseArmor: 1
@@ -131,7 +131,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 357192639}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: .100000001, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 844407988}
@@ -282,7 +282,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 647899407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.86934948, y: 3.71922398, z: 6.85229492}
+  m_LocalPosition: {x: -5.86934948, y: 3.93459034, z: 6.85229492}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1322369268}
@@ -352,7 +352,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 820510011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.0249233, y: 3.71922398, z: 6.85229492}
+  m_LocalPosition: {x: 11.0249233, y: 3.93459034, z: 6.85229492}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1322369268}
@@ -608,8 +608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74879c208d946741b4bfa2983577747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugText: {fileID: 647899407}
   ball: {fileID: 1804295044}
+  paddle: {fileID: 1105997424}
   maxHealth: 20
   basePower: 1
   baseArmor: 1
@@ -637,7 +637,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1033497220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.100000001, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1105997428}
@@ -859,10 +859,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 1804295044}
-  player1: {fileID: 1033497220}
   p1AI: 0
-  player2: {fileID: 357192639}
+  player1: {fileID: 1033497220}
+  p1text: {fileID: 647899407}
   p2AI: 0
+  player2: {fileID: 357192639}
+  p2text: {fileID: 820510011}
 --- !u!1 &1804295044
 GameObject:
   m_ObjectHideFlags: 0
