@@ -46,8 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\FireblastScript.cs" />
      <Compile Include="Assets\Scripts\BallEffects.cs" />
+     <Compile Include="Assets\Scripts\FireblastScript.cs" />
      <Compile Include="Assets\Scripts\PaddleAnimationController.cs" />
      <Compile Include="Assets\Scripts\PaddleController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />

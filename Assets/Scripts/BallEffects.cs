@@ -30,7 +30,7 @@ public class BallEffects : MonoBehaviour {
 		switch(idNum){
 		case 1:
 			name = "ignited";
-			maxTimer = 160;
+			maxTimer = 60f;
 			break;
 		case 0://reset
 			name = "null";
@@ -63,7 +63,9 @@ public class BallEffects : MonoBehaviour {
 	public float getTimer(){
 		return timer;
 	}
-	
+	public float getTimerMax(){
+		return maxTimer;
+	}
 	// Use this for initialization
 	void Start () {
 	

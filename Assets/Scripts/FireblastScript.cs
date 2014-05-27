@@ -9,6 +9,8 @@ public class FireblastScript : MonoBehaviour {
 	private bool collided;
 	private int life;
 	private int maxLife;
+	
+	private int power;
 	// Use this for initialization
 	void Start () {
 		velocity = new Vector3(speed, 0, 0);
@@ -16,12 +18,12 @@ public class FireblastScript : MonoBehaviour {
 		collided = false;
 		life = 0;
 		maxLife = 150;
+		power = 2;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		velocity = new Vector3(speed, 0, 0);
-		print (velocity);
 
 		this.transform.Translate(velocity*Time.deltaTime);
 
@@ -33,12 +35,14 @@ public class FireblastScript : MonoBehaviour {
 	}
 	//check collisions
 	void OnCollisionEnter(Collision collision) {
-		if(life > 30 && !collided){//ignore collisions when initially spawned
+		if(life > 10 && !collided){//ignore collisions when initially spawned
 			if(collision.transform.tag == "Paddle"){
 				collided = true;
 	        	GameObject player = collision.gameObject.transform.parent.gameObject;
 				PlayerController pc = player.GetComponent<PlayerController>();
-				pc.takeDamage(2);
+				
+				pc.checkForBurningDamage();
+				pc.takeDamage(power);
 			}
 		}
 	}

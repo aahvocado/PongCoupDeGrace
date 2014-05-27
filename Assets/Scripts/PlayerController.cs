@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 	public GameObject ball;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 	private PongSkill skillC;//third skill name
 	
 	private PongSkill currentSkill;
+	private List<PlayerEffects> effectsList;
 	
 
 	// Use this for initialization
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour {
 		currPower = basePower;
 		currArmor = baseArmor;
 		//
+		effectsList = new List<PlayerEffects>();
 		paddleScript = this.GetComponent<PaddleController>();
 		currentSkill = null;
 	}
@@ -42,6 +45,8 @@ public class PlayerController : MonoBehaviour {
 		//playerInput();
 		paddleScript.setVerticalMove(vMove);
 		action = paddleScript.getCurrentAction();
+		
+		updateEffects();
 		//check skill
 		if(skillA.getName() != "null"){
 			updateSkills ();
@@ -49,7 +54,6 @@ public class PlayerController : MonoBehaviour {
 			print ("MISSING SKILLS");
 		}
 		//debug
-		
 	}
 	void updateSkills(){
 		//check if using a skill
@@ -62,7 +66,16 @@ public class PlayerController : MonoBehaviour {
 		skillB.updateSkill();
 		skillC.updateSkill();
 	}
-
+	//
+	void updateEffects(){
+		foreach(PlayerEffects e in effectsList){
+			e.updateEffects();
+			if(!e.isActive()){
+				//kind of a bad way to remove right now
+				//effectsList.Remove(e);
+			}
+		}
+	}
 	//use a skill
 	public string useSkill(PongSkill skill){
 		if(!isAction() && !skill.isOnCooldown()){
@@ -85,6 +98,15 @@ public class PlayerController : MonoBehaviour {
 			return "none";
 		}
 	}
+	//add a player effect
+	public void addEffect(PlayerEffects e){
+		if(getEffect ("burning").getName()=="null"){
+			effectsList.Add (new PlayerEffects("burning"));
+		}else{
+			getEffect ("burning").refresh();
+		}
+	}
+	//using a specific skill
 	void useFireblast(){
 		Vector3 pos = new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
 		GameObject fb = (GameObject)Instantiate(Resources.Load ("Fireblast", typeof(GameObject)), pos, Quaternion.identity);
@@ -98,8 +120,31 @@ public class PlayerController : MonoBehaviour {
 	void useIgnite(){
 		ball.GetComponent<PongBall>().addEffect(new BallEffects("ignited"));
 	}
+	public void checkForBurningDamage(){
+		if(isBurning()){//check for burning
+			takeDamage(Mathf.Ceil(getCurrHealth()*.07f));
+		}else{
+			addEffect(new PlayerEffects("burning"));//add burn
+		}
+	}
 	
 	//getters
+	//gets an effect from the list
+	public PlayerEffects getEffect(string effectName){
+		foreach(PlayerEffects e in effectsList){
+			if(e.getName() == effectName){
+				return e;
+			}
+		}
+		return new PlayerEffects("null");
+	}
+	public bool isBurning(){
+		PlayerEffects effect = getEffect ("burning");
+		if(effect.getName()!="null" && effect.isActive()){
+			return true;
+		}
+		return false;
+	}
 	public float getMaxHealth(){
 		return maxHealth;
 	}
@@ -112,6 +157,9 @@ public class PlayerController : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+	public List<PlayerEffects> getEffectsList(){
+		return effectsList;
 	}
 	public PongSkill getCurrentSkill(){
 		return currentSkill;
@@ -135,7 +183,6 @@ public class PlayerController : MonoBehaviour {
 		return vMove;
 	}
 	//setters
-	
 	public void setSkillPassive(PongSkill s){
 		skillPassive = s;
 	}

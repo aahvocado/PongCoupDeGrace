@@ -18,7 +18,7 @@ public class PongGameController : MonoBehaviour {
 		p1script = player1.GetComponent<PlayerController>();
 		p2script = player2.GetComponent<PlayerController>();
 		//
-		p1script.setSkillPassive(new PongSkill("null"));
+		p1script.setSkillPassive(new PongSkill("incinerate"));
 		p1script.setSkillA(new PongSkill("fireblast"));
 		p1script.setSkillB(new PongSkill("ignite"));
 		p1script.setSkillC(new PongSkill("forward smash"));
@@ -42,8 +42,16 @@ public class PongGameController : MonoBehaviour {
 	}
 	//updates the debug based on player 
 	void updateDebug(TextMesh tm, PlayerController pscript){
+		string effectsText = " ";
+		PlayerEffects pe = new PlayerEffects("null");
+		if(pscript.isBurning()){
+			pe = pscript.getEffect("burning");
+			effectsText = effectsText + pe.getName() + " " + pe.getTimer() + "/" + pe.getTimerMax();
+		}
+		//add all the text to text mesh
 		tm.text = "\nhp: "+ pscript.getCurrHealth() + "/" + pscript.getMaxHealth()+
-				  "\naction: "+ pscript.getAction() +
+				  "\naction: "+ pscript.getAction() + 
+				  "\neffects: "+ effectsText + 
 				  "\npassive: "+ pscript.getSkillPassive().getName()+ " "+ pscript.getSkillPassive().displayCooldown()+
 				  "\ng: "+pscript.getSkillA().getName()+ " "+ pscript.getSkillA().displayCooldown()+
 				  "\nh: "+pscript.getSkillB().getName()+ " "+ pscript.getSkillB().displayCooldown()+

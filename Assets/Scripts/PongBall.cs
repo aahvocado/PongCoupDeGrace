@@ -118,11 +118,12 @@ public class PongBall : MonoBehaviour {
 	void ballEffectsCheck(PlayerController pc){
 		//ignited, hurt player
 		if(hasEffectName("ignited")){
-			pc.takeDamage(1);
+			pc.checkForBurningDamage();
 		}
 	}
 	//deal damage to paddle
 	float damageToPlayer(PlayerController pc, float damage){
+		pc.checkForBurningDamage();
 		pc.takeDamage(damage);
 		return damage;
 	}

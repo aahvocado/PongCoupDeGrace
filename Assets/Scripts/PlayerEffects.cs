@@ -22,8 +22,8 @@ public class PlayerEffects : MonoBehaviour {
 		id = idNum;
 		switch(idNum){
 		case 1:
-			name = "ignited";
-			maxTimer = 160;
+			name = "burning";
+			maxTimer = 90;
 			break;
 		case 0://reset
 			name = "null";
@@ -34,7 +34,7 @@ public class PlayerEffects : MonoBehaviour {
 	}
 	public void changeEffect(string n){
 		switch(n){
-		case "ignited":
+		case "burning":
 			changeEffect (1);
 			break;
 		case "null":
@@ -56,12 +56,19 @@ public class PlayerEffects : MonoBehaviour {
 	public float getTimer(){
 		return timer;
 	}
-	
+	public float getTimerMax(){
+		return maxTimer;
+	}
 	// Use this for initialization
 	void Start () {
 	
 	}
-	
+	public void updateEffects () {
+		//this doesn't actually get called I don't think		
+		if(timer > 0){
+			timer --;
+		}
+	}
 	// Update is called once per frame
 	void Update () {
 		//this doesn't actually get called I don't think		
