@@ -859,10 +859,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 1804295044}
-  p1AI: 0
+  player_1_AI_Mode: 0
   player1: {fileID: 1033497220}
   p1text: {fileID: 647899407}
-  p2AI: 0
+  player_2_AI_Mode: 1
   player2: {fileID: 357192639}
   p2text: {fileID: 820510011}
 --- !u!1 &1804295044

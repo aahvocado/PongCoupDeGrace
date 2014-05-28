@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		//playerInput();
 		paddleScript.setVerticalMove(vMove);
+		stayWithinBoundaries();
 		action = paddleScript.getCurrentAction();
 		
 		updateEffects();
@@ -127,7 +128,17 @@ public class PlayerController : MonoBehaviour {
 			addEffect(new PlayerEffects("burning"));//add burn
 		}
 	}
-	
+	//keep the paddle within boundaries
+	void stayWithinBoundaries(){
+		Vector3 lower = paddleScript.getLower();
+		Vector3 upper = paddleScript.getUpper ();
+		if(getPos ().y < lower.y){//lower
+			this.transform.position = new Vector3(this.transform.position.x, lower.y, this.transform.position.z);
+		}
+		if(getPos ().y > upper.y){//upper
+			this.transform.position = new Vector3(this.transform.position.x, upper.y, this.transform.position.z);
+		}
+	}
 	//getters
 	//gets an effect from the list
 	public PlayerEffects getEffect(string effectName){
@@ -160,6 +171,10 @@ public class PlayerController : MonoBehaviour {
 	}
 	public List<PlayerEffects> getEffectsList(){
 		return effectsList;
+	}
+	public Vector3 getPos(){
+		//note this has to use the child paddle's x and then this gameobject's y
+		return new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
 	}
 	public PongSkill getCurrentSkill(){
 		return currentSkill;

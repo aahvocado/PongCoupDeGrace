@@ -2,13 +2,15 @@
 using System.Collections;
 
 public class PongGameController : MonoBehaviour {
-	public GameObject ball;
-	public bool p1AI;//player 1 computer player?
+	public GameObject ball;//ball
+	public bool player_1_AI_Mode;//player 1 computer player?
+	private PaddleAI p1AI;
 	public GameObject player1;
 	private PlayerController p1script;
 	public GameObject p1text;
 	
-	public bool p2AI;//player 2 computer player?
+	public bool player_2_AI_Mode;//player 2 computer player?
+	private PaddleAI p2AI;
 	public GameObject player2;
 	private PlayerController p2script;
 	public GameObject p2text;
@@ -16,7 +18,9 @@ public class PongGameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		p1script = player1.GetComponent<PlayerController>();
+		p1AI = new PaddleAI(player1, ball);
 		p2script = player2.GetComponent<PlayerController>();
+		p2AI = new PaddleAI(player2, ball);
 		//
 		p1script.setSkillPassive(new PongSkill("incinerate"));
 		p1script.setSkillA(new PongSkill("fireblast"));
@@ -70,7 +74,7 @@ public class PongGameController : MonoBehaviour {
 	}
 	//player 1
 	void updateP1(){
-		if(!p1AI){
+		if(!player_1_AI_Mode){
 			if (Input.GetKeyDown(KeyCode.G)){
 				p1script.useSkill (p1script.getSkillA());
 			}
@@ -82,11 +86,13 @@ public class PongGameController : MonoBehaviour {
 			}
 			//send vertical movement value to the paddlescript
 			p1script.setVMove(Input.GetAxis ("P1 Vertical"));
+		}else{
+			p1AI.updateAI();
 		}
 	}
 	//player 2
 	void updateP2(){
-		if(!p2AI){
+		if(!player_2_AI_Mode){
 			if (Input.GetKeyDown(KeyCode.Keypad1)){
 				p2script.useSkill (p2script.getSkillA());
 			}
@@ -98,6 +104,8 @@ public class PongGameController : MonoBehaviour {
 			}
 			//send vertical movement value to the paddlescript
 			p2script.setVMove(Input.GetAxis ("P2 Vertical"));
+		}else{
+			p2AI.updateAI();
 		}
 	}
 }

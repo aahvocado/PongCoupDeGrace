@@ -227,6 +227,9 @@ public class PongBall : MonoBehaviour {
 		velocity = new Vector3(velocity.x, velocity.y*-1, velocity.z);
 	}
 	//getters
+	public Vector3 getPos(){
+		return this.transform.position;
+	}
 	public List<BallEffects> getEffects(){
 		return effectsList;
 	}

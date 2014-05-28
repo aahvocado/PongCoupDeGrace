@@ -58,6 +58,12 @@ public class PaddleController : MonoBehaviour {
 		return false;
 	}
 	//getters
+	public Vector3 getLower(){
+		return lowerBounds;
+	}
+	public Vector3 getUpper(){
+		return upperBounds;
+	}
 	public float getSpeed(){
 		return currSpeed;
 	}
