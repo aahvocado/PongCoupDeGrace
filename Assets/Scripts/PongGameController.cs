@@ -19,8 +19,10 @@ public class PongGameController : MonoBehaviour {
 	void Start () {
 		p1script = player1.GetComponent<PlayerController>();
 		p1AI = new PaddleAI(player1, ball);
+
 		p2script = player2.GetComponent<PlayerController>();
 		p2AI = new PaddleAI(player2, ball);
+
 		//
 		p1script.setSkillPassive(new PongSkill("incinerate"));
 		p1script.setSkillA(new PongSkill("fireblast"));

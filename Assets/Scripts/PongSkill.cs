@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PongSkill : MonoBehaviour {
+	
 	public string name;//string name for this skill
 	public int id;//id number for this skill
 	private string description;//

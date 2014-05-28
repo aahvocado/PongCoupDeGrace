@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 
 public class PongBall : MonoBehaviour {
+	public bool freezeBall;//freeze movement for debugging
+
 	public GameObject p1;
 	private PlayerController p1script;
 	public GameObject p2;
@@ -132,7 +134,8 @@ public class PongBall : MonoBehaviour {
 	void Update () {
 		//
 		Vector3 pos = this.transform.position;
-		this.transform.Translate(velocity*Time.deltaTime);//move ball		
+		if(!freezeBall)
+			this.transform.Translate(velocity*Time.deltaTime);//move ball		
 		
 		//check left right bounds
 		if(pos.x < lowerBounds.x){

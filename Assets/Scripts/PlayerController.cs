@@ -195,7 +195,8 @@ public class PlayerController : MonoBehaviour {
 		return skillC;
 	}
 	public float getVMove(){
-		return vMove;
+		//because player 2 is flipped we have to inverse the currently visible vmove
+		return this.transform.root.gameObject.tag == "Player2" ? vMove : vMove;
 	}
 	//setters
 	public void setSkillPassive(PongSkill s){

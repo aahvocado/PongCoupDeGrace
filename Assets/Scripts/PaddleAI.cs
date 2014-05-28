@@ -7,8 +7,8 @@ public class PaddleAI : MonoBehaviour {
 	public GameObject ball;
 	private PongBall ballscript;
 	
-	private float vMoveMax = 1;
-	private float vMoveSpeed = .2f;
+	public float vMoveMax = 1;
+	public float vMoveSpeed = .2f;
 	
 	public PaddleAI(GameObject playerObject, GameObject ballObject){
 		player = playerObject;
@@ -16,6 +16,9 @@ public class PaddleAI : MonoBehaviour {
 		//
 		ball = ballObject;
 		ballscript = ball.GetComponent<PongBall>();
+		
+		//
+		//vMoveSpeed = player.tag == "Player2" ? -vMoveSpeed:vMoveSpeed;
 	}
 	
 	//this does stuff
@@ -31,17 +34,35 @@ public class PaddleAI : MonoBehaviour {
 		Vector3 ballpos = ballscript.getPos();
 		Vector3 pos = pc.getPos();
 		
+		//print (player.tag + " vMove " + ballpos.y);
+		
 		if(pos.y < ballpos.y){
-			if(pc.getVMove()>-vMoveMax){
-				pc.setVMove(pc.getVMove()-vMoveSpeed);
-			}
+			print ("moving up");
+			pc.setVMove(pc.getVMove()+vMoveSpeed);
+
 		}else if(pos.y > ballpos.y){
-			if(pc.getVMove()<vMoveMax){
-				pc.setVMove(pc.getVMove()+vMoveSpeed);
-			}
+			print ("moving down");
+			pc.setVMove(pc.getVMove()-vMoveSpeed);
+		}
+		checkVMoveSpeed();
+	}
+	//lazy way to keep vmove in AI max speed
+	void checkVMoveSpeed(){
+		if(pc.getVMove() > vMoveMax){
+			pc.setVMove(vMoveMax);
+		}else if(pc.getVMove() < -vMoveMax){
+			pc.setVMove(-vMoveMax);
 		}
 	}
+	//setters
+	public void setVMoveSpeed(float v){
+		vMoveSpeed = v;
+	}
 	
+	//getters
+	public float getVMoveSpeed(){
+		return vMoveSpeed;
+	}
 	// Use this for initialization
 	void Start () {
 		
