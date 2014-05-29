@@ -17,10 +17,6 @@ public class PongSkill : MonoBehaviour {
 	private float cooldown;//the cooldown timer
 	
 	//private Vector3 currMovementModifier;
-	
-	public PongSkill(int idNum){//changes skill to id
-		changeSkill(idNum);
-	}
 	public PongSkill(string skillName){//changes skill to name
 		changeSkill(skillName);
 	}
@@ -30,67 +26,47 @@ public class PongSkill : MonoBehaviour {
 		baseDamage = 0.0f;
 		baseMovementModifier = new Vector3(0,0,0);
 	}
-	//changes this skill based on the id number
-	public void changeSkill(int idNum){
-		id = idNum;
-		switch(idNum){
-		case 5:
-			name = "incinerate";
-			baseCooldown = 60f;
+	//changes this skill based on the name
+	public void changeSkill(string skillName){
+		name = skillName;
+		switch(skillName){
+		case "rising wind":
+			break;
+		case "lightning strike":
+			break;
+		case "whiplash":
+			break;
+		//Vida skills
+		case "incinerate":
+			baseCooldown = 10f;
 			description = "Your abilities burn enemies. If they are already burned they take an additional 7% (rounded up) damage.";
 			break;
-		case 4:
-			name = "fireblast";
+		case "fireblast":
 			baseDamage = 1.0f;
-			baseCooldown = 60f;
+			baseCooldown = 45f;
 			description = "Shoot a fireball that does " + baseDamage + "damage and sets the enemy on fire."; 
 			break;
-		case 3:
-			name = "ignite";
-			baseCooldown = 200f;
+		case "ignite":
+			baseCooldown = 150f;
 			description = "Ignites the ball, burning any player that touches it.";
 			break;
-		case 2:
-			name = "firewall";
-			baseCooldown = 350f;
+		case "firewall":
+			baseCooldown = 200f;
+			description = "Creates a wall of fire at your current location. If the ball hits the firewall then it gets set on fire.";
 			break;
-			
-		case 1:
-			name = "forward smash";
+		//generic
+		case "forward smash":
 			baseCooldown = 150.0f;
 			baseDamage = 10.0f;
 			baseMovementModifier = new Vector3(3f, 0.5f, 1f);
 			break;
-		case 0://reset
+		default://reset
 			name = "null";
 			baseDamage = 0.0f;
 			baseMovementModifier = new Vector3(0,0,0);
 			break;
 		}
 		currCooldown = baseCooldown;
-	}
-	//changes this skill based on the name
-	public void changeSkill(string skillName){
-		switch(skillName){
-		case "incinerate":
-			changeSkill (5);
-			break;
-		case "fireblast":
-			changeSkill(4);
-			break;
-		case "ignite":
-			changeSkill(3);
-			break;
-		case "firewall":
-			changeSkill(2);
-			break;
-		case "forward smash":
-			changeSkill (1);
-			break;
-		case "null":
-			changeSkill(0);
-			break;
-		}
 	}
 	
 	// Update is called once per frame
@@ -107,7 +83,10 @@ public class PongSkill : MonoBehaviour {
 		currCooldown = 0;
 	}
 	public void reset(){
-		changeSkill(id);
+		changeSkill(name);
+	}
+	public void setLowCooldown(float t){
+		baseCooldown = t;
 	}
 	//getters
 	public bool isOnCooldown(){

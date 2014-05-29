@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
+	
 	public GameObject ball;
 	public GameObject paddle;
 	private float vMove;//get passed this from Pong Game Controller
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 	void updateSkills(){
 		//check if using a skill
 		if(!isAction ()){
-			currentSkill = new PongSkill(0);
+			currentSkill = new PongSkill("null");
 		}
 		//cooldown all skills
 		skillPassive.updateSkill();
@@ -82,16 +83,21 @@ public class PlayerController : MonoBehaviour {
 		if(!isAction() && !skill.isOnCooldown()){
 			skill.goOnCooldown();
 			switch(skill.getName()){
-				case "fireblast":
-					useFireblast();
-					break;
-				case "forward smash":
-					paddleScript.forwardSmash();
-					break;
-				case "ignite":
-					useIgnite();
-					break;
-				
+			case "lightning strike":
+				useLightningStrike();
+				break;
+			case "firewall":
+				useFirewall();
+				break;
+			case "fireblast":
+				useFireblast();
+				break;
+			case "forward smash":
+				paddleScript.forwardSmash();
+				break;
+			case "ignite":
+				useIgnite();
+				break;
 			}
 			currentSkill = skill;
 			return skill.getName();
@@ -108,6 +114,14 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	//using a specific skill
+	void useLightningStrike(){
+		paddleScript.forwardSmash();
+		//ball.GetComponent<PongBall>().addEffect(new BallEffects("lightning"));
+	}
+	void useFirewall(){
+		Vector3 pos = new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
+		GameObject fb = (GameObject)Instantiate(Resources.Load ("Firewall", typeof(GameObject)), pos, Quaternion.identity);
+	}
 	void useFireblast(){
 		Vector3 pos = new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
 		GameObject fb = (GameObject)Instantiate(Resources.Load ("Fireblast", typeof(GameObject)), pos, Quaternion.identity);

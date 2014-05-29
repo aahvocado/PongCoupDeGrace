@@ -12,37 +12,23 @@ public class PlayerEffects : MonoBehaviour {
 	public PlayerEffects(string n){
 		changeEffect(n);
 	}
-	public PlayerEffects(int i){
-		changeEffect(i);
-	}
 	public void refresh(){
 		timer = maxTimer;
 	}
-	public void changeEffect(int idNum){
-		id = idNum;
-		switch(idNum){
-		case 1:
+	public void changeEffect(string n){
+		name = n;
+		switch(n){
+		case "burning":
 			name = "burning";
 			maxTimer = 90;
 			break;
-		case 0://reset
+		default://reset
 			name = "null";
 			maxTimer = 0;
 			break;
 		}
 		timer = maxTimer;
 	}
-	public void changeEffect(string n){
-		switch(n){
-		case "burning":
-			changeEffect (1);
-			break;
-		case "null":
-			changeEffect(0);
-			break;
-		}
-	}
-	
 	//getters
 	public string getName(){
 		return name;

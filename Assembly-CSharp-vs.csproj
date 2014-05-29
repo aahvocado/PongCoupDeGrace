@@ -47,15 +47,17 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BallEffects.cs" />
-     <Compile Include="Assets\Scripts\FireblastScript.cs" />
      <Compile Include="Assets\Scripts\PaddleAI.cs" />
      <Compile Include="Assets\Scripts\PaddleAnimationController.cs" />
      <Compile Include="Assets\Scripts\PaddleController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerEffects.cs" />
      <Compile Include="Assets\Scripts\PongBall.cs" />
+     <Compile Include="Assets\Scripts\PongCharacter.cs" />
      <Compile Include="Assets\Scripts\PongGameController.cs" />
      <Compile Include="Assets\Scripts\PongSkill.cs" />
+     <Compile Include="Assets\Scripts\Skill Scripts\FireblastScript.cs" />
+     <Compile Include="Assets\Scripts\Skill Scripts\FirewallScript.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>

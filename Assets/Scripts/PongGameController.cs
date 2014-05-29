@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class PongGameController : MonoBehaviour {
+	public bool setLowCooldowns;//make everything super low cooldown
+
 	public GameObject ball;//ball
 	public bool player_1_AI_Mode;//player 1 computer player?
 	private PaddleAI p1AI;
@@ -19,29 +21,46 @@ public class PongGameController : MonoBehaviour {
 	void Start () {
 		p1script = player1.GetComponent<PlayerController>();
 		p1AI = new PaddleAI(player1, ball);
+		PongCharacter p1char = new PongCharacter("Vida");
 
 		p2script = player2.GetComponent<PlayerController>();
 		p2AI = new PaddleAI(player2, ball);
+		PongCharacter p2char = new PongCharacter("Sora");
+		
+		//
+		p1script.setSkillPassive(p1char.getSkillPassive ());
+		p1script.setSkillA(p1char.getSkillA());
+		p1script.setSkillB(p1char.getSkillB());
+		p1script.setSkillC(p1char.getSkillC());
+		
+		
 
 		//
-		p1script.setSkillPassive(new PongSkill("incinerate"));
-		p1script.setSkillA(new PongSkill("fireblast"));
-		p1script.setSkillB(new PongSkill("ignite"));
-		p1script.setSkillC(new PongSkill("forward smash"));
-		//
-		p2script.setSkillPassive(new PongSkill("null"));
-		p2script.setSkillA(new PongSkill("fireblast"));
-		p2script.setSkillB(new PongSkill("ignite"));
-		p2script.setSkillC(new PongSkill("forward smash"));
+		p2script.setSkillPassive(p2char.getSkillPassive());
+		p2script.setSkillA(p2char.getSkillA());
+		p2script.setSkillB(p2char.getSkillB());
+		p2script.setSkillC(p2char.getSkillC());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//ball
 		checkBall();
-		//
+		//players
 		updateP1 ();
 		updateP2 ();
+		//debug
+		if(setLowCooldowns){
+			p1script.getSkillPassive().setLowCooldown(30);
+			p1script.getSkillA().setLowCooldown(30);
+			p1script.getSkillB().setLowCooldown(30);
+			p1script.getSkillC().setLowCooldown(30);
+			
+			p2script.getSkillPassive().setLowCooldown(30);
+			p2script.getSkillA().setLowCooldown(30);
+			p2script.getSkillB().setLowCooldown(30);
+			p2script.getSkillC().setLowCooldown(30);
+		}
 		//update debugging text
 		updateDebug(p1text.GetComponent<TextMesh>(), p1script);
 		updateDebug(p2text.GetComponent<TextMesh>(), p2script);

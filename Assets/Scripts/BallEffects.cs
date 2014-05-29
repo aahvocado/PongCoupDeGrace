@@ -12,11 +12,11 @@ public class BallEffects : MonoBehaviour {
 	public BallEffects(string n){
 		changeEffect(n);
 	}
-	public BallEffects(int i){
-		changeEffect(i);
-	}
 	public void refresh(){
 		timer = maxTimer;
+	}
+	public void reset(){
+		changeEffect(name);
 	}
 	//timer
 	public void updateEffect(){
@@ -25,31 +25,25 @@ public class BallEffects : MonoBehaviour {
 		}
 	}
 	//set to effect
-	public void changeEffect(int idNum){
-		id = idNum;
-		switch(idNum){
-		case 1:
+	public void changeEffect(string n){
+		name = n;
+		switch(n){
+		case "ignited":
 			name = "ignited";
 			maxTimer = 60f;
 			break;
-		case 0://reset
+		default://reset
 			name = "null";
 			maxTimer = 0;
 			break;
 		}
 		timer = maxTimer;
 	}
-	public void changeEffect(string n){
-		switch(n){
-		case "ignited":
-			changeEffect (1);
-			break;
-		case "null":
-			changeEffect(0);
-			break;
-		}
+	//setters
+	public void setLowCooldown(float t){
+		maxTimer = t;
+		//maxTimer = maxTimer *.1f;
 	}
-	
 	//getters
 	public string getName(){
 		return name;
@@ -66,6 +60,7 @@ public class BallEffects : MonoBehaviour {
 	public float getTimerMax(){
 		return maxTimer;
 	}
+	
 	// Use this for initialization
 	void Start () {
 	

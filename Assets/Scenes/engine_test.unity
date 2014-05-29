@@ -858,6 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffa5d86fa68d3e4188181955d48360e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setLowCooldowns: 0
   ball: {fileID: 1804295044}
   player_1_AI_Mode: 0
   player1: {fileID: 1033497220}
@@ -953,7 +954,7 @@ MonoBehaviour:
   p2: {fileID: 357192639}
   paddlePositionMatters: 0
   damageOnCollision: 0
-  defaultSpeed: 5
+  defaultSpeed: 8.80000019
   defaultSize: {x: .5, y: .5, z: .5}
   spawnPosition: {x: 0, y: 0, z: 0}
   lowerBounds: {x: -10, y: -5, z: 10}

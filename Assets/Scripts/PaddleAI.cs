@@ -8,7 +8,8 @@ public class PaddleAI : MonoBehaviour {
 	private PongBall ballscript;
 	
 	public float vMoveMax = 1;
-	public float vMoveSpeed = .2f;
+	public float vMoveSpeed = .3f;
+	public float visibleRange = 9f;
 	
 	public PaddleAI(GameObject playerObject, GameObject ballObject){
 		player = playerObject;
@@ -25,23 +26,21 @@ public class PaddleAI : MonoBehaviour {
 	public void updateAI(){
 		Vector3 ballpos = ballscript.getPos();
 		Vector3 pos = pc.getPos();
-		
-		verticalChaseBall();
+		if(Mathf.Abs (pos.x - ballpos.x) < visibleRange){//within visible x range?
+			verticalChaseBall();
+		}else{//slow down
+			pc.setVMove(pc.getVMove()*.85f);
+		}
 		
 	}
 	//chase the ball
 	void verticalChaseBall(){
 		Vector3 ballpos = ballscript.getPos();
 		Vector3 pos = pc.getPos();
-		
-		//print (player.tag + " vMove " + ballpos.y);
-		
+				
 		if(pos.y < ballpos.y){
-			print ("moving up");
 			pc.setVMove(pc.getVMove()+vMoveSpeed);
-
 		}else if(pos.y > ballpos.y){
-			print ("moving down");
 			pc.setVMove(pc.getVMove()-vMoveSpeed);
 		}
 		checkVMoveSpeed();

@@ -61,7 +61,7 @@ public class PongBall : MonoBehaviour {
 		float spawnx = Random.Range(-1,1);
 		float spawny = Random.Range(-1,1);
 		float x = spawnx < 0.0 ? -currSpeed : currSpeed;
-		float y = spawny < 0.0 ? -(currSpeed) : currSpeed;
+		float y = spawny < 0.0 ? -(currSpeed*.7f) : currSpeed*.7f;
 		//print ("random "+ testx + " / " + testy);
 		
 		//force test velocity
@@ -76,6 +76,8 @@ public class PongBall : MonoBehaviour {
 			//Paddle paddleScript = collider.GetComponent<Paddle>();
 			//print (collider.GetComponent<Collider>().bounds.size);
         	paddleHit(collision.gameObject);
+		}else if(collision.transform.tag == "Wall"){
+			wallHit(collision.gameObject);
 		}
 	}
 	//ball hit the paddle
@@ -107,12 +109,37 @@ public class PongBall : MonoBehaviour {
 		//velocity.x *= velocityHorizontalBoost;
 		reflectX ();
 	}
+	void wallHit(GameObject p){
+		Vector3 pos = this.transform.position;
+		Vector3 paddlePos = p.transform.position;
+		//check wall effects
+		if(p.name == "Firewall(Clone)"){
+			addEffect(new BallEffects("ignited"));
+		}
+		//calculate bounce factor
+		float lengthThird = .3f;
+		float velocityVerticalBoost = 1.2f;
+		float velocityVerticalShrink = .7f;
+		float velocityHorizontalBoost = 1.4f;
+		//change reflection depending on where it hit on the paddle
+		if(paddlePositionMatters){
+			velocity.y = Mathf.Asin(pos.y - paddlePos.y) * 7;
+			if(Mathf.Abs(velocity.y) > 20){
+				velocity.y *= velocityVerticalShrink;
+				}
+		}
+		reflectX();
+	}
 	//skills affecting this ball
 	void paddleEffectsCheck(PlayerController pc){
 		PongSkill skill = pc.getCurrentSkill();
+		string skillName = skill.getName();
 		if(pc.isAction()){
-			if(skill.getName() == "forward smash"){
+			if(skillName == "forward smash"){
 				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
+			}
+			if(skillName == "lightning strike"){
+				addEffect(new BallEffects("lightning straight"));
 			}
 		}
 	}
@@ -120,6 +147,7 @@ public class PongBall : MonoBehaviour {
 	void ballEffectsCheck(PlayerController pc){
 		//ignited, hurt player
 		if(hasEffectName("ignited")){
+			pc.takeDamage(1);//normal 1 bonus damage from an ignited ball
 			pc.checkForBurningDamage();
 		}
 	}
