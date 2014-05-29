@@ -21,7 +21,7 @@ public class PongGameController : MonoBehaviour {
 	void Start () {
 		p1script = player1.GetComponent<PlayerController>();
 		p1AI = new PaddleAI(player1, ball);
-		PongCharacter p1char = new PongCharacter("Vida");
+		PongCharacter p1char = new PongCharacter("Sora");
 
 		p2script = player2.GetComponent<PlayerController>();
 		p2AI = new PaddleAI(player2, ball);
@@ -52,12 +52,12 @@ public class PongGameController : MonoBehaviour {
 		updateP2 ();
 		//debug
 		if(setLowCooldowns){
-			p1script.getSkillPassive().setLowCooldown(30);
+			//p1script.getSkillPassive().setLowCooldown(30);
 			p1script.getSkillA().setLowCooldown(30);
 			p1script.getSkillB().setLowCooldown(30);
 			p1script.getSkillC().setLowCooldown(30);
 			
-			p2script.getSkillPassive().setLowCooldown(30);
+			//p2script.getSkillPassive().setLowCooldown(30);
 			p2script.getSkillA().setLowCooldown(30);
 			p2script.getSkillB().setLowCooldown(30);
 			p2script.getSkillC().setLowCooldown(30);

@@ -29,6 +29,7 @@ public class PongBall : MonoBehaviour {
 	public Vector3 lowerBounds;//lower bounds
 	public Vector3 upperBounds;//upper bounds
 	
+	private float lightningStraightSpeed = 21;//speed for when lightning strike is used
 	// Use this for initialization
 	void Start () {
 		fireEffect = GameObject.Find("OnFire");
@@ -145,6 +146,12 @@ public class PongBall : MonoBehaviour {
 	}
 	//effects that happen 
 	void ballEffectsCheck(PlayerController pc){
+		//we hit something take off lightning strike
+		if(hasEffectName("lightning straight")){
+			if(getEffectName("lightning straight").isCheckable()){
+				effectsList.Remove(getEffectName("lightning straight"));
+			}
+		}
 		//ignited, hurt player
 		if(hasEffectName("ignited")){
 			pc.takeDamage(1);//normal 1 bonus damage from an ignited ball
@@ -162,8 +169,14 @@ public class PongBall : MonoBehaviour {
 	void Update () {
 		//
 		Vector3 pos = this.transform.position;
-		if(!freezeBall)
+		if(hasEffectName("lightning straight")){//check for lightning strike
+			Vector3 lightningVelocity = new Vector3(lightningStraightSpeed*getHorizontalDirection(),0,0);
+			this.transform.Translate(lightningVelocity*Time.deltaTime);//move ball
+		}else if(freezeBall){
+			//did we toggle freeze ball in place
+		}else{
 			this.transform.Translate(velocity*Time.deltaTime);//move ball		
+		}
 		
 		//check left right bounds
 		if(pos.x < lowerBounds.x){
@@ -258,6 +271,13 @@ public class PongBall : MonoBehaviour {
 		velocity = new Vector3(velocity.x, velocity.y*-1, velocity.z);
 	}
 	//getters
+	public int getHorizontalDirection(){
+		if(velocity.x < 0){
+			return -1;
+		}else{
+			return 1;
+		}
+	}
 	public Vector3 getPos(){
 		return this.transform.position;
 	}

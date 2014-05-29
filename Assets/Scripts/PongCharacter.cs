@@ -34,7 +34,7 @@ public class PongCharacter : MonoBehaviour {
 			speed = 4.5f;
 			skillPassive = new PongSkill("rising wind");
 			skillA = new PongSkill("lightning strike");
-			skillB = new PongSkill("null");
+			skillB = new PongSkill("breeze");
 			skillC = new PongSkill("whiplash");
 			break;
 		}

@@ -28,8 +28,11 @@ public class BallEffects : MonoBehaviour {
 	public void changeEffect(string n){
 		name = n;
 		switch(n){
+		case "lightning straight":
+			maxTimer = 30;
+			//lightning strike just makes this ball go straight and then bounce off
+			break;
 		case "ignited":
-			name = "ignited";
 			maxTimer = 60f;
 			break;
 		default://reset
@@ -45,6 +48,13 @@ public class BallEffects : MonoBehaviour {
 		//maxTimer = maxTimer *.1f;
 	}
 	//getters
+	//isCheckable basically says if it's past 10 frames
+	public bool isCheckable(){
+		if(timer < maxTimer - 10){
+			return true;
+		}
+		return false;
+	}
 	public string getName(){
 		return name;
 	}
