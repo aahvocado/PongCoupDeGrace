@@ -47,8 +47,12 @@ public class PlayerController : MonoBehaviour {
 		paddleScript.setVerticalMove(vMove);
 		stayWithinBoundaries();
 		action = paddleScript.getCurrentAction();
-		
+		//effects
 		updateEffects();
+		//rising wind check
+		if(getSkillPassive().getName() == "rising wind"){
+			paddleScript.bonusSpeed(getSkillPassive().getRisingWind());
+		}
 		//check skill
 		if(skillA.getName() != "null"){
 			updateSkills ();
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour {
 	//use a skill
 	public string useSkill(PongSkill skill){
 		if(!isAction() && !skill.isOnCooldown()){
+			//normal
 			skill.goOnCooldown();
 			switch(skill.getName()){
 			case "lightning strike":
@@ -100,6 +105,10 @@ public class PlayerController : MonoBehaviour {
 				break;
 			}
 			currentSkill = skill;
+			//rising wind check
+			if(getSkillPassive().getName() == "rising wind"){
+				getSkillPassive().risindWindDecrement();
+			}
 			return skill.getName();
 		}else{
 			return "none";
@@ -213,6 +222,15 @@ public class PlayerController : MonoBehaviour {
 		return this.transform.root.gameObject.tag == "Player2" ? vMove : vMove;
 	}
 	//setters
+	public void setHealth(float hp){
+		maxHealth = hp;
+		if(currHealth > maxHealth){
+			currHealth = maxHealth;
+		}
+	}
+	public void setSpeed(float sp){
+		paddleScript.setSpeed (sp);
+	}
 	public void setSkillPassive(PongSkill s){
 		skillPassive = s;
 	}

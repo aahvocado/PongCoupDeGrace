@@ -57,6 +57,19 @@ public class PaddleController : MonoBehaviour {
 		}
 		return false;
 	}
+	//setters
+	public void setSpeed(float sp){
+		defaultSpeed = sp;
+		//if(currSpeed > defaultSpeed){
+			currSpeed = defaultSpeed;
+		//}
+	}
+	public void bonusSpeed(float sp){
+		currSpeed = defaultSpeed + sp;
+	}
+	public void setVerticalMove(float v){
+		vMove = v;
+	}
 	//getters
 	public Vector3 getLower(){
 		return lowerBounds;
@@ -83,10 +96,6 @@ public class PaddleController : MonoBehaviour {
 		return false;
 
 	}
-	//setters
 
-	public void setVerticalMove(float v){
-		vMove = v;
-	}
 
 }

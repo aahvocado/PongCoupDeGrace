@@ -32,14 +32,15 @@ public class PongGameController : MonoBehaviour {
 		p1script.setSkillA(p1char.getSkillA());
 		p1script.setSkillB(p1char.getSkillB());
 		p1script.setSkillC(p1char.getSkillC());
-		
-		
-
+		p1script.setHealth(p1char.getHealth());
+		p1script.setSpeed(p1char.getSpeed());
 		//
 		p2script.setSkillPassive(p2char.getSkillPassive());
 		p2script.setSkillA(p2char.getSkillA());
 		p2script.setSkillB(p2char.getSkillB());
 		p2script.setSkillC(p2char.getSkillC());
+		p2script.setHealth(p2char.getHealth());
+		p2script.setSpeed(p2char.getSpeed());
 	}
 	
 	// Update is called once per frame

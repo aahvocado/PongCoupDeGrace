@@ -23,7 +23,7 @@ public class PongCharacter : MonoBehaviour {
 		switch(n){
 		case "Vida":
 			health = 20;
-			speed = 15;
+			speed = 6;
 			skillPassive = new PongSkill("incinerate");
 			skillA = new PongSkill("fireblast");
 			skillB = new PongSkill("ignite");
@@ -31,7 +31,7 @@ public class PongCharacter : MonoBehaviour {
 			break;
 		case "Sora":
 			health = 22;
-			speed = 15;
+			speed = 4.5f;
 			skillPassive = new PongSkill("rising wind");
 			skillA = new PongSkill("lightning strike");
 			skillB = new PongSkill("null");
@@ -41,6 +41,12 @@ public class PongCharacter : MonoBehaviour {
 	}
 	
 	//getter
+	public float getHealth(){
+		return health;
+	}
+	public float getSpeed(){
+		return speed;
+	}
 	public string getName(){
 		return name;
 	}
