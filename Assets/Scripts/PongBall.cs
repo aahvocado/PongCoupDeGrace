@@ -20,7 +20,7 @@ public class PongBall : MonoBehaviour {
 	public float defaultSpeed;//movement speed
 	private float currSpeed;
 	
-	private Vector3 velocity;
+	public Vector3 velocity;
 
 	public Vector3 defaultSize;//paddle size
 	private Vector3 currSize;
@@ -29,7 +29,9 @@ public class PongBall : MonoBehaviour {
 	public Vector3 lowerBounds;//lower bounds
 	public Vector3 upperBounds;//upper bounds
 	
-	private float lightningStraightSpeed = 21;//speed for when lightning strike is used
+	public float speedContactMultiplier = 1.05f;
+	
+	private float lightningStraightSpeed = 10.2f;//speed for when lightning strike is used
 	// Use this for initialization
 	void Start () {
 		fireEffect = GameObject.Find("OnFire");
@@ -49,11 +51,11 @@ public class PongBall : MonoBehaviour {
 	
 	//public functions
 	//add an effect onto the ball
-	public void addEffect(BallEffects e){
-		if(hasEffectName(e.getName())){
-			getEffectName(e.getName()).refresh();
+	public void addEffect(string n){
+		if(hasEffectName(n)){
+			getEffectName(n).refresh();
 		}else{
-			effectsList.Add(e);
+			effectsList.Add(new BallEffects(n));
 		}
 	}
 
@@ -107,7 +109,9 @@ public class PongBall : MonoBehaviour {
 				}
 		}
 			
-		//velocity.x *= velocityHorizontalBoost;
+		//increase velocity
+		changeVelocity(speedContactMultiplier);
+		//flip the ball
 		reflectX ();
 	}
 	void wallHit(GameObject p){
@@ -115,7 +119,7 @@ public class PongBall : MonoBehaviour {
 		Vector3 paddlePos = p.transform.position;
 		//check wall effects
 		if(p.name == "Firewall(Clone)"){
-			addEffect(new BallEffects("ignited"));
+			addEffect("ignited");
 		}
 		//calculate bounce factor
 		float lengthThird = .3f;
@@ -133,6 +137,8 @@ public class PongBall : MonoBehaviour {
 	}
 	//skills affecting this ball
 	void paddleEffectsCheck(PlayerController pc){
+		
+		//check player's current skills
 		PongSkill skill = pc.getCurrentSkill();
 		string skillName = skill.getName();
 		if(pc.isAction()){
@@ -140,7 +146,7 @@ public class PongBall : MonoBehaviour {
 				velocity = new Vector3(velocity.x*skill.getMovementModifier().x, velocity.y*skill.getMovementModifier().y, velocity.z*skill.getMovementModifier().z);
 			}
 			if(skillName == "lightning strike"){
-				addEffect(new BallEffects("lightning straight"));
+				addEffect("lightning straight");
 			}
 		}
 	}
@@ -170,7 +176,9 @@ public class PongBall : MonoBehaviour {
 		//
 		Vector3 pos = this.transform.position;
 		if(hasEffectName("lightning straight")){//check for lightning strike
-			Vector3 lightningVelocity = new Vector3(lightningStraightSpeed*getHorizontalDirection(),0,0);
+			float lspeed = lightningStraightSpeed*getHorizontalDirection()+currSpeed*getHorizontalDirection();
+			lspeed = lspeed > 32 ? 32:lspeed;//don't go too high
+			Vector3 lightningVelocity = new Vector3(lspeed,0,0);
 			this.transform.Translate(lightningVelocity*Time.deltaTime);//move ball
 		}else if(freezeBall){
 			//did we toggle freeze ball in place
@@ -238,6 +246,13 @@ public class PongBall : MonoBehaviour {
 		}
 		return false;
 	}
+	//change velocity by a factor of v
+	public void changeVelocity(float v){
+		velocity = velocity * v;
+	}
+	public void loseVelocityX(float v){
+		velocity = new Vector3(velocity.x + v, velocity.y, velocity.z);
+	}
 	//make sure velocity isn't too fast or too slow
 	void checkVelocity(){
 		float xmin = 3.0f;
@@ -264,10 +279,10 @@ public class PongBall : MonoBehaviour {
 	}
 	
 	//changes in velocity
-	void reflectX(){
+	public void reflectX(){
 		velocity = new Vector3(velocity.x*-1, velocity.y, velocity.z);
 	}
-	void reflectY(){
+	public void reflectY(){
 		velocity = new Vector3(velocity.x, velocity.y*-1, velocity.z);
 	}
 	//getters

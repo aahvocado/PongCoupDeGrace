@@ -19,14 +19,15 @@ public class PongGameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//setDebugCharacters();
 		p1script = player1.GetComponent<PlayerController>();
 		p1AI = new PaddleAI(player1, ball);
-		PongCharacter p1char = new PongCharacter("Sora");
+		PongCharacter p1char = new PongCharacter("Vida");
 
 		p2script = player2.GetComponent<PlayerController>();
 		p2AI = new PaddleAI(player2, ball);
-		PongCharacter p2char = new PongCharacter("Sora");
-		
+		//PongCharacter p2char = new PongCharacter("Sora");
+		PongCharacter p2char = new PongCharacter(PlayerPrefs.GetString("enemyName"));
 		//
 		p1script.setSkillPassive(p1char.getSkillPassive ());
 		p1script.setSkillA(p1char.getSkillA());
@@ -42,7 +43,15 @@ public class PongGameController : MonoBehaviour {
 		p2script.setHealth(p2char.getHealth());
 		p2script.setSpeed(p2char.getSpeed());
 	}
-	
+	void setDebugCharacters(){
+		p1script = player1.GetComponent<PlayerController>();
+		p1AI = new PaddleAI(player1, ball);
+		PongCharacter p1char = new PongCharacter("Vida");
+
+		p2script = player2.GetComponent<PlayerController>();
+		p2AI = new PaddleAI(player2, ball);
+		PongCharacter p2char = new PongCharacter("Sora");
+	}
 	// Update is called once per frame
 	void Update () {
 		//ball
@@ -70,8 +79,8 @@ public class PongGameController : MonoBehaviour {
 	void updateDebug(TextMesh tm, PlayerController pscript){
 		string effectsText = " ";
 		PlayerEffects pe = new PlayerEffects("null");
-		if(pscript.isBurning()){
-			pe = pscript.getEffect("burning");
+		if(pscript.isBreezing()){
+			pe = pscript.getEffect("breezing");
 			effectsText = effectsText + pe.getName() + " " + pe.getTimer() + "/" + pe.getTimerMax();
 		}
 		//add all the text to text mesh

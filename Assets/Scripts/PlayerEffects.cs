@@ -8,7 +8,7 @@ public class PlayerEffects : MonoBehaviour {
 	private float maxTimer;//time it takes for this effect to go away
 	public float timer;//time 
 	
-	
+	public float breezeDistance = 7;
 	public PlayerEffects(string n){
 		changeEffect(n);
 	}
@@ -18,6 +18,11 @@ public class PlayerEffects : MonoBehaviour {
 	public void changeEffect(string n){
 		name = n;
 		switch(n){
+		//sora
+		case "breezing":
+			maxTimer = 50;
+			break;
+		//vida
 		case "burning":
 			name = "burning";
 			maxTimer = 90;
@@ -30,6 +35,9 @@ public class PlayerEffects : MonoBehaviour {
 		timer = maxTimer;
 	}
 	//getters
+	public float getBreezeDistance(){
+		return breezeDistance;
+	}
 	public string getName(){
 		return name;
 	}

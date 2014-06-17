@@ -107,6 +107,7 @@ MonoBehaviour:
   maxHealth: 20
   basePower: 1
   baseArmor: 1
+  breezeStrength: .0799999982
 --- !u!114 &357192641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,6 +614,7 @@ MonoBehaviour:
   maxHealth: 20
   basePower: 1
   baseArmor: 1
+  breezeStrength: .349999994
 --- !u!114 &1033497222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -858,7 +860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffa5d86fa68d3e4188181955d48360e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setLowCooldowns: 1
+  setLowCooldowns: 0
   ball: {fileID: 1804295044}
   player_1_AI_Mode: 0
   player1: {fileID: 1033497220}
@@ -954,11 +956,13 @@ MonoBehaviour:
   p2: {fileID: 357192639}
   paddlePositionMatters: 0
   damageOnCollision: 0
-  defaultSpeed: 8.80000019
+  defaultSpeed: 5.80000019
+  velocity: {x: 0, y: 0, z: 0}
   defaultSize: {x: .5, y: .5, z: .5}
   spawnPosition: {x: 0, y: 0, z: 0}
   lowerBounds: {x: -10, y: -5, z: 10}
   upperBounds: {x: 10, y: 5, z: 10}
+  speedContactMultiplier: 1.08000004
 --- !u!54 &1804295050
 Rigidbody:
   m_ObjectHideFlags: 0

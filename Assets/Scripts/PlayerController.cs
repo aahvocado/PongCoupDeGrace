@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public GameObject ball;
 	public GameObject paddle;
+	private float height = 5;
 	private float vMove;//get passed this from Pong Game Controller
 	
 	public float maxHealth;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 	private PongSkill currentSkill;
 	private List<PlayerEffects> effectsList;
 	
-
+	public float breezeStrength = .25f;
 	// Use this for initialization
 	void Start () {
 		currHealth = maxHealth;
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 		paddleScript.setVerticalMove(vMove);
 		stayWithinBoundaries();
 		action = paddleScript.getCurrentAction();
-		//effects
+		//check effects
 		updateEffects();
 		//rising wind check
 		if(getSkillPassive().getName() == "rising wind"){
@@ -74,6 +75,11 @@ public class PlayerController : MonoBehaviour {
 	}
 	//
 	void updateEffects(){
+		//print ("dist "+ (getPos().x - ball.GetComponent<PongBall>().getPos().x));
+		if(isBreezing()){
+			updateBreezing();
+		}
+		//update timer of everything everything
 		foreach(PlayerEffects e in effectsList){
 			e.updateEffects();
 			if(!e.isActive()){
@@ -88,9 +94,17 @@ public class PlayerController : MonoBehaviour {
 			//normal
 			skill.goOnCooldown();
 			switch(skill.getName()){
+			//sora
 			case "lightning strike":
 				useLightningStrike();
 				break;
+			case "breeze":
+				useBreeze();
+				break;
+			case "whiplash":
+				useWhiplash();
+				break;
+			//vida
 			case "firewall":
 				useFirewall();
 				break;
@@ -115,17 +129,21 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	//add a player effect
-	public void addEffect(PlayerEffects e){
-		if(getEffect ("burning").getName()=="null"){
-			effectsList.Add (new PlayerEffects("burning"));
+	public void addEffect(string n){
+		if(getEffect (n).getName()=="null"){
+			effectsList.Add (new PlayerEffects(n));
 		}else{
-			getEffect ("burning").refresh();
+			getEffect (n).refresh();
 		}
 	}
 	//using a specific skill
+	void useWhiplash(){
+		PongBall ballScript = ball.GetComponent<PongBall>();
+		ballScript.reflectX();
+		//ballScript.reflectY();
+	}
 	void useLightningStrike(){
 		paddleScript.forwardSmash();
-		//ball.GetComponent<PongBall>().addEffect(new BallEffects("lightning"));
 	}
 	void useFirewall(){
 		Vector3 pos = new Vector3(paddle.transform.position.x, this.transform.position.y, this.transform.position.z);
@@ -141,14 +159,25 @@ public class PlayerController : MonoBehaviour {
 		}		
 
 	}
+	void updateBreezing(){
+		print ("checking breeze");
+		//within horizontal and vertical boundaries of this paddle
+		//isWithinPaddleHeight(ball.GetComponent<PongBall>().getPos()) && 
+		if(Mathf.Abs(getPos().x - ball.GetComponent<PongBall>().getPos().x)< getEffect("breezing").getBreezeDistance()){
+			ball.GetComponent<PongBall>().loseVelocityX(breezeStrength*getPaddleDirection());
+		}
+	}
+	void useBreeze(){
+		addEffect ("breezing");
+	}
 	void useIgnite(){
-		ball.GetComponent<PongBall>().addEffect(new BallEffects("ignited"));
+		ball.GetComponent<PongBall>().addEffect("ignited");
 	}
 	public void checkForBurningDamage(){
 		if(isBurning()){//check for burning
 			takeDamage(Mathf.Ceil(getCurrHealth()*.07f));
 		}else{
-			addEffect(new PlayerEffects("burning"));//add burn
+			addEffect("burning");//add burn
 		}
 	}
 	//keep the paddle within boundaries
@@ -162,7 +191,18 @@ public class PlayerController : MonoBehaviour {
 			this.transform.position = new Vector3(this.transform.position.x, upper.y, this.transform.position.z);
 		}
 	}
+
 	//getters
+	//gets the direction the ball should be going based on this player
+	public int getPaddleDirection(){
+		return this.transform.root.gameObject.tag == "Player2" ? -1 : 1;
+	}
+	public bool isWithinPaddleHeight(Vector3 p){
+		if(p.y < getPos().y - height && p.y > getPos().y + height){
+			return true;
+		}
+		return false;
+	}
 	//gets an effect from the list
 	public PlayerEffects getEffect(string effectName){
 		foreach(PlayerEffects e in effectsList){
@@ -171,6 +211,13 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		return new PlayerEffects("null");
+	}
+	public bool isBreezing(){
+		PlayerEffects effect = getEffect ("breezing");
+		if(effect.getName()!="null" && effect.isActive()){
+			return true;
+		}
+		return false;
 	}
 	public bool isBurning(){
 		PlayerEffects effect = getEffect ("burning");
